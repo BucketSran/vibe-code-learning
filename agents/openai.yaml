@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vibe Code Learning"
+  short_description: "Learn real code through PRs, diagrams, and memory"
+  default_prompt: "Use $vibe-code-learning to explain this change through its project flow, adapt to my learning history, and save a review note."

@@ -1,0 +1,17 @@
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.*
+!.env.example
+config.json
+config.local.json
+*.local.json
+.obsidian/
+vault/
+memory/
+skill-state/
+work/
+outputs/
+*.log
