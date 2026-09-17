@@ -4,6 +4,8 @@ A Codex skill for learning to understand, navigate, and change code while workin
 
 Start with a project map, follow one input through the execution flow, and connect each PR change to its files, functions, verified line numbers, and commit versions. Retain what the learner actually demonstrated across sessions.
 
+Change explanations include focused actual diff hunks with before/after behavior. For missing Git history or unsynchronized copies, the skill can compare provenance-labeled snapshots and help establish scoped future checkpoints; see [diff learning](references/diff-learning.md).
+
 The skill instructions are in English. Lessons and notes follow the user's language.
 
 ## Modes

@@ -2,7 +2,7 @@
 name: vibe-code-learning
 description: Help a user learn from a real repository, PR, or completed coding change through project maps, versioned code references, guided explanations, recall tests, and persistent learner notes. Use when the user wants to understand code while vibe coding, review what a PR taught them, or test their understanding. Ordinary implementation or code review alone does not request a lesson.
 metadata:
-  version: 0.1.1
+  version: 0.1.6
 ---
 
 # Vibe Code Learning
@@ -37,7 +37,23 @@ For local changes, name the comparison explicitly (for example, staged changes a
 
 Every substantive changed behavior should be traceable to its file, symbol, verified line or small line range, version, and place in the flow. Verify line numbers from the exact file contents for that version, including blank lines. Deleted code belongs to the base version; renamed code needs the correct path for each side. Live checkout links must not pretend to display old-version lines. Use verified permanent source links when available; otherwise include a precise version/path/symbol reference alongside the local navigation link.
 
+**Emit clickable references, not bare paths.** In note-taking environments (Obsidian, Typora, VS Code Markdown), a bare absolute path like `/repo/pkg/module.py:91` is not clickable. Emit a Markdown link whose display text is the short repo-relative name plus the line anchor, for example `[module.py:91](…)`; never leave a long absolute path as visible reading text.
+
+**Choose the URI scheme by asking where it should open.** A `file:///` URI is handled by the operating system's default app for the file extension — for `.py` this may be VS Code, Xcode, TextEdit, or nothing useful, so the opening behavior is unpredictable and lands wherever the user's defaults point, not necessarily at the cited line. Prefer the editor's own URL scheme when the learner has one: `[module.py:91](vscode://file/repo/pkg/module.py:91)` opens VS Code at that exact line. Use `file:///` only as a fallback.
+
+**Detect the editor once, interactively.** The first time a lesson emits code links, check whether VS Code is available (the `code` CLI on PATH, or `Visual Studio Code.app` under the platform's applications directory). If present, emit `vscode://file/...:line` links and say so. If absent, keep `file:///` links and add a one-line suggestion such as "安装 VS Code 后，这些链接可以直接跳转到对应文件和行号" — offer it once, do not nag or block the lesson on it. Record the choice in the learner profile so later lessons skip the question.
+
+**Open at the file level, not a parent directory.** Deep-link the cited file (and line) so the click lands in context; opening a parent folder forces the learner to re-find the file. Reserve a repo-root link for the one place a project map is presented, and cite intermediate directories only in breadcrumbs (plain text), never as link targets.
+
+**Re-verify line numbers at save time.** Code moves between the first inspection and the final note edit. Line numbers verified early can drift by the time the note is saved (a class cited at `:129` may have moved to `:133`; a line may now be a blank line or a closing paren). Immediately before saving, re-run the verification against every emitted `path:line` and correct or drop any that no longer land on the cited symbol. If drift is likely to continue (active working tree), prefer citing the symbol name over the line number, or cite both (`module.py:133`, `EnvironmentProjector`).
+
 Label the evidence boundary naturally: source inspection supports a possible or configured path; a trace, log, or executed test supports what happened in that observed run. Neither proves all possible runtime behavior. Existing notes can guide navigation but cannot override current code.
+
+## Make the change visible
+
+For change explanations, read [diff-learning.md](references/diff-learning.md). Establish the two real comparison sides, then show the relevant actual diff hunks alongside the behavioral explanation. A link to the final source alone does not show what changed. Start with a compact change map; avoid dumping a whole patch before explaining its place in the execution flow.
+
+Use existing Git history where available. For uncommitted or unsynchronized work, distinguish commit, index, working tree, untracked files, and remote snapshots. When history is missing, use explicit before/after snapshots and `git diff --no-index`; never invent a historical baseline. Help establish future checkpoints within the user's scope, preferably in an isolated comparison directory when touching the live project is unnecessary. Preserve Test mode's answer boundary.
 
 ## Explain from the whole to the change
 
@@ -45,10 +61,28 @@ Use this progression as a reading route, scaling it to the question:
 
 1. **Project map:** the relevant directories/modules, their responsibilities, and the entry point. Show how this part fits into the larger project before opening a helper function. Reuse a still-accurate map in a continuing lesson.
 2. **One concrete journey:** follow an input through configuration, calls, transformations, execution, and the returned result. Identify meaningful branches and execution boundaries. For tools, distinguish the model's request, dispatch, actual execution, and returned observation.
-3. **PR delta:** show the behavior before and after, why it changed, which files/functions implement it, and the upstream/downstream consequences. Group mechanical edits; keep all substantive behavior changes accounted for.
+3. **Change delta:** show a focused actual diff (`-` old, `+` new) with enough surrounding context, then explain the behavior before and after, why it changed, and its upstream/downstream consequences. Attach the comparison identity and old/new file locations. Group mechanical edits; keep all substantive behavior changes accounted for. For non-Git snapshots, label the diff as a snapshot comparison, not a PR.
 4. **Transferable knowledge:** explain the small amount of language, design, or debugging knowledge needed to understand this change. Link unfamiliar terms to their role in the actual code. Offer a useful next reading point rather than an unrelated syllabus.
 
-Use a diagram when it makes the multi-step path clearer. Prefer a small Mermaid flowchart, sequence diagram, or data-flow sketch suitable for chat and Obsidian. Highlight changed nodes/edges and connect them to a code-reference table. Arrows must have a clear meaning: call, data transfer, dependency, or event. Do not mix these meanings without labels. Configuration branches must not look like a sequence in which every branch runs.
+### Show where code lives before explaining what it does
+
+In Explain mode, introduce one short global directory map showing the repository root and major responsibilities. At each multi-file topic, use a local location card: a breadcrumb from the repository root (for example `alphaapollo → reasoning → runtime`), a small subtree containing only relevant files, and explanations attached directly to short clickable file links. The breadcrumb supplies the enclosing folders without widening every subtree. Verify paths against the inspected version. Do not expose long absolute paths as reading text; keep them in link targets.
+
+Keep structural location separate from execution order: the map answers “which subsystem owns this code?”, while a flow diagram answers “what runs next?”. Explain the input/output contracts first, then the loop, then the next execution boundary. Introduce paper concepts beside the implementing objects, rather than requiring readers to join a file list, a tree, and a separate concept table themselves.
+
+For an actual change, mark affected files as added, modified, deleted, or renamed against the established comparison; mark unchanged callers/callees as context. For source reading without a diff, mark reading focus rather than modified files. Explain the changed responsibility and downstream effect within the location card. Use a separate mapping table only if it adds a comparison absent from the cards; it is not mandatory.
+
+Reuse the global map in continuing lessons. Add only the local card needed for a new topic. In Test mode, use neutral or partial maps that preserve the answer boundary.
+
+Use an execution diagram only for relationships not already clear from the text or location card. Prefer small Mermaid or text diagrams. Label arrows as calls, data transfer, dependencies, or events; alternative configuration branches must not appear sequential. Attach evidence links within the explanation rather than duplicating them in an obligatory reference table.
+
+### Keep rereadable notes free of duplication
+
+Give each knowledge point one primary explanation location. Other sections may link to it and supply the minimum context needed to understand new material. When adding a map, card, or diagram, rewrite or remove the lists, paragraphs, and tables it replaces in the same edit; do not append another representation of the same explanation.
+
+Keep tables for meaningful comparisons. Omit paper-to-code summary tables, repeated entry-point lists, closing recaps, and duplicate execution chains when they merely restate the body. Preserve necessary background, causal explanation, evidence, qualifications, user-authored material, and useful navigation; concision is not a line-count target.
+
+Before saving, ask of each block: would removing it lose unique information or a necessary reading transition? If not, delete or merge it. Check that surviving links and anchors still work, and that unique details from removed sections have a clear home.
 
 For an interactive, larger, or presentation-ready diagram, use `archify` if installed and read its instructions before generating its artifact. Keep a readable preview or simple diagram in the learning note; an external HTML file alone is not a useful note. If drawing/rendering tools are unavailable, provide readable diagram source or a text sketch and state what was not visually checked.
 

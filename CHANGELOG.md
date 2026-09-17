@@ -2,9 +2,24 @@
 
 Release versions match `metadata.version` in `SKILL.md` and the corresponding `vX.Y.Z` Git tag.
 
-## Unreleased
+## 0.1.6 — 2026-09-17
 
-No changes recorded yet.
+### Changed
+
+- Code references in learning notes now emit clickable Markdown links; in note environments a bare absolute path is not clickable.
+- URI scheme is chosen by target editor: prefer `vscode://file/<path>:<line>` (opens VS Code at the cited line); `file:///` is the fallback. One-time interactive editor detection with a single install suggestion; the choice is recorded in the learner profile.
+- Deep-link the cited file and line instead of a parent directory; repo-root links are reserved for project maps.
+
+### Added
+
+- Token-budget memory design: the profile centers on a fixed-shape concept index (one row per concept, updated in place); the agent restores context from the index only, session notes are for the human; rolling compression folds mastered-and-dormant concepts into archived one-liners; updates are targeted deltas, never full regenerations; the profile targets roughly a page (~1500 tokens).
+- Save-time line-number re-verification: code moves between first inspection and the final note edit, so every emitted `path:line` is re-checked before saving; prefer symbol anchors when drift is likely.
+
+## 0.1.2 – 0.1.3 — 2026-09-16
+
+- Added diff-led explanations so learners can see actual removed/added code beside behavioral changes instead of navigating only to the final source.
+- Added comparison guidance for PRs, staged/unstaged/untracked changes, non-Git snapshots and unsynchronized local/remote copies, including provenance and missing-baseline limits.
+- Added scoped Git checkpoint assistance without implicitly changing live history, the index or remote repositories; learning records now retain diff identities and links.
 
 ## 0.1.1 — 2026-09-16
 

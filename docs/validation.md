@@ -31,3 +31,9 @@ The initial testing prompt contained ambiguous wording: it first said to run a c
 These are bounded qualitative trials, not a statistical benchmark or proof of learning outcomes. They used a simulated repository rather than a large production PR. Mermaid source was checked semantically but not rendered for visual acceptance. The optional archify route, real conversation-history retrieval, and long-term profile maintenance were not exercised. English and Chinese instructions were not compared experimentally.
 
 Future evaluations should keep learner data isolated, run only the scenarios affected by a change, and record actual behavior before revising the skill. Useful next cases include a larger PR with asynchronous calls, a second real lesson that resumes a saved question, and a rendered diagram review.
+
+## Unreleased: diff-led learning — 2026-09-17
+
+A coordinator exercised the new command paths in an isolated synthetic repository and two non-Git directories. Staged and unstaged changes produced distinct hunks; total tracked changes did not silently include an untracked file; the file was discovered separately. `git diff --no-index` produced an inspectable patch with exit status 1 for differences, without initializing Git in either snapshot directory. Source status and the Git index remained unchanged during inspection.
+
+The official skill validator passed using an existing environment with PyYAML; the default Python lacked that dependency. Internal reference links and whitespace were checked. This was a local command-path exercise and instruction review, not an independent agent trial. Remote-copy capture, native review UI rendering, and optional Git setup were not executed; no learner profile or personal vault was used by these fixtures.
