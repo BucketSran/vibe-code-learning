@@ -2,6 +2,32 @@
 
 Release versions match `metadata.version` in `SKILL.md` and the corresponding `vX.Y.Z` Git tag.
 
+## 0.1.7 — 2026-09-18
+
+### Fixed
+
+- Replaced the growing always-read concept index with bounded active context and topic-specific retrieval. Large legacy profiles can keep their original text while adding a small active section.
+- Preserved full evidence, unresolved gaps, and independent ability dimensions during archival; age no longer implies mastery or gap removal.
+- Selected code links by output surface and actual user preference instead of treating an installed editor as a chosen editor. Kept historical citations separate from live navigation when lines drift.
+- Updated the default installation example to the new release; retained the first-release rollback example.
+
+### Added
+
+- Lightweight gap classification and relevant-session revisits, recording actual assistance and evidence without mandatory quizzes or background reminders.
+- Optional small coding exercises in an isolated or explicitly selected practice location, with modification ability grounded in the user's edit and executed checks.
+- Dedicated code-link reference and compatibility guidance for existing schema-version-1 memory.
+
+### Validation
+
+- Exercised legacy-memory continuation, versioned links with a temporary editor override, optional coding practice and feedback, and a fresh-context recall question with no note writes.
+- Initial trials exposed a dependency error: reading the memory reference and the full legacy profile in parallel. Clarified the entrypoint ordering, then verified selective cold-start retrieval in a fresh agent trial.
+- Verified preservation of 1000 legacy concept rows and original learner notes, source snapshot bytes, unchanged source/config state where required, and package format/internal links. See [validation notes](docs/validation.md).
+
+### Compatibility
+
+- No configuration schema change or forced note migration. Existing profile paths and learner-authored records remain valid; optional active sections provide selective access to large legacy profiles.
+- Skill rollback does not undo external note updates. No real learner memory was migrated during release validation.
+
 ## 0.1.6 — 2026-09-17
 
 ### Changed

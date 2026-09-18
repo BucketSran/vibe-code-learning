@@ -25,8 +25,8 @@ Static source inspection, observed execution, and unresolved assumptions should 
 
 - A small set of concepts worth retaining, with links to existing notes.
 - The user's actual question, explanation, or attempted edit.
-- Feedback and any assistance provided; no response means pending.
-- What is now supported about this specific ability, and what remains unverified.
-- The next reading point or review question.
+- Feedback and the actual hints or repairs provided; no response means pending.
+- What is supported separately about explaining, locating, and modifying; link each claim to the user's response/edit and relevant checks.
+- The observed gap (concept, causal flow, navigation, or detail) when useful, and the next reading point or fresh review question.
 
 For a pending Test-mode record, omit the solved diagram, answer key, and answer-bearing code map until the user responds or explicitly asks for solutions. Save the prompt and pending status instead. If the material was already taught, distinguish assisted recall from an independent transfer check.

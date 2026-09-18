@@ -24,7 +24,7 @@ For a new installation, clone the released version into your Codex skills direct
 
 ```bash
 mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
-git clone --branch v0.1.1 https://github.com/BucketSran/vibe-code-learning.git \
+git clone --branch v0.1.7 https://github.com/BucketSran/vibe-code-learning.git \
   "${CODEX_HOME:-$HOME/.codex}/skills/vibe-code-learning"
 ```
 
@@ -57,6 +57,12 @@ $CODEX_HOME/skill-state/vibe-code-learning/config.json
 When `CODEX_HOME` is unset, the default base is `~/.codex`. An explicitly selected configuration takes precedence. Personal profiles, chat excerpts, local paths, and learning notes belong in private user storage, not this public repository.
 
 Memory is read and updated when the skill is used; there is no background service. Current instructions such as “do not save this session” override previous saving preferences. Existing notes establish exposure, not mastery.
+
+The profile's active context stays small; detailed concept records and original session evidence are retrieved by topic. Explanation, navigation, and modification are tracked separately. Existing schema-version-1 configurations keep working: oversized profiles can gain a short active section without deleting their older records or rewriting the learner's words.
+
+Code links follow their destination: host-native links in chat, and the user's chosen editor or a suitable source/file link in notes. Installed software does not silently become a stored preference. Historical citations keep their original revision even when the live checkout moves.
+
+To practice a concept, ask for a small coding exercise. The skill waits for your attempt and checks the actual edit; optional practice does not interrupt an otherwise requested implementation. Later relevant sessions can revisit an unresolved gap with a fresh example.
 
 ## Versions, updates, and rollback
 
@@ -92,3 +98,5 @@ Switching skill versions does not roll back the learner's external notes or prof
 4. Commit the change, create a new annotated tag, and publish a release for that tag. Do not overwrite an older release tag or rewrite published history to undo a change; create a new fix or use `git revert`.
 
 Personal memory stays outside versioned skill files. There is no need to rerun unrelated scenarios for a documentation-only change.
+
+Design references and adaptation choices are recorded in [design notes](docs/design-notes.md).
